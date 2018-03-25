@@ -1,5 +1,5 @@
 /* eslint-disable func-names, space-before-function-paren,
-function-paren-newline, prefer-destructuring */
+function-paren-newline, prefer-destructuring, no-unused-vars */
 
 const os = require('os');
 const path = require('path');
@@ -8,8 +8,8 @@ const cp = require('child_process');
 function getProcessName(binName) {
   const filename = os.platform() === 'win32' ? `${binName}.exe` : binName;
   const filePath = __dirname.includes('asar')
-    ? path.join(__dirname, '..', '..', 'assets', 'bin', os.platform(), filename)
-    : path.join(__dirname, '..', 'assets', 'bin', os.platform(), filename);
+    ? path.join(__dirname, '..', '..', 'resources', 'bin', os.platform(), filename)
+    : path.join(__dirname, '..', 'resources', 'bin', os.platform(), filename);
   return cp.spawnSync('type', [binName]).status === 0 ? binName : filePath;
 }
 
@@ -59,6 +59,10 @@ module.exports.startLndProcess = async function({
 }) {
   const processName = 'lnd';
   const args = [
+    // reevaluate what these should really be later. these were
+    // the original. i added the ones below.
+
+    /*
     isDev ? '--bitcoin.active' : '',
     isDev ? '--bitcoin.simnet' : '',
     isDev ? '--btcd.rpcuser=kek' : '',
@@ -71,7 +75,12 @@ module.exports.startLndProcess = async function({
     isDev ? '' : '--neutrino.connect=btcd0.lightning.computer:18333',
     isDev ? '' : '--neutrino.connect=127.0.0.1:18333',
     isDev ? '' : '--autopilot.active',
+    */
 
+    '--bitcoin.active',
+    '--bitcoin.testnet',
+    '--bitcoin.node=neutrino',
+    '--neutrino.connect=faucet.lightning.community',
     macaroonsEnabled ? '' : '--no-macaroons',
     lndDataDir ? `--datadir=${lndDataDir}` : '',
     lndDataDir ? `--tlscertpath=${lndDataDir}/tls.cert` : '',

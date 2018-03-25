@@ -206,8 +206,10 @@
   "dependencies": {
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
+    "electron-log": "^2.2.14",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
+    "ps-node": "^0.1.6",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0-beta.13",

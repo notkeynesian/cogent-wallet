@@ -69,7 +69,7 @@ module.exports.init = async function({
 }) {
   const credentials = await getCredentials(lndDataDir);
   const { lnrpc } = grpc.load(
-    path.join(__dirname, '..', 'assets', 'rpc.proto')
+    path.join(__dirname, '..', 'resources', 'rpc.proto')
   );
   let metadata;
   if (macaroonsEnabled) {

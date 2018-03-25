@@ -10,10 +10,115 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import log from 'electron-log';
+import ps from 'ps-node';
+import grcpClient from './grpc-client';
+import { startLndProcess, startBtcdProcess } from './lnd-child-process';
 import MenuBuilder from './menu';
 
+// *************************
+// ********* INIT **********
+// *************************
+
+const LND_NAME = 'lnd';
+const LND_DATA_DIR = 'data/lnd_data';
+const LND_LOG_DIR = 'data/lnd_log';
+const BTCD_DATA_DIR = 'data/btcd_data';
+const BTCD_LOG_DIR = 'data/btcd_log';
+const LND_PORT = 10009;
+const LND_PEER_PORT = 10019;
+const isDev = process.env.NODE_ENV === 'development';
+// reevaluate these later;
+const MACAROONS_ENABLED = false; // was def in diff location in original code
+
 let mainWindow = null;
+let lndProcess;
+let btcdProcess;
+
+// *************************
+// ******** LOGGING ********
+// *************************
+
+log.transports.console.level = 'info';
+log.transports.file.level = 'info';
+ipcMain.on('log', (event, arg) => log.info(...arg));
+ipcMain.on('log-error', (event, arg) => log.error(...arg));
+
+let logQueue = [];
+let logsReady = false;
+
+const sendLog = log => {
+  if (mainWindow && logsReady) {
+    mainWindow.webContents.send('logs', log);
+  } else {
+    logQueue.push(log);
+  }
+};
+const Logger = {
+  info: msg => {
+    log.info(msg);
+    sendLog(msg);
+  },
+  error: msg => {
+    log.error(msg);
+    sendLog(`ERROR: ${msg}`);
+  },
+};
+ipcMain.on('logs-ready', () => {
+  logQueue.map(line => mainWindow && mainWindow.webContents.send('logs', line));
+  logQueue = [];
+  logsReady = true;
+});
+
+// *************************
+// ******* LIGHTNING *******
+// *************************
+
+const startLnd = async () => {
+  try {
+    // not loading btcd yet as i dont have binaries, using neutrino to start.
+    /*
+    btcdProcess = await startBtcdProcess({
+      isDev,
+      logger: Logger,
+      btcdLogDir: BTCD_LOG_DIR,
+      btcdDataDir: BTCD_DATA_DIR,
+    });
+    */
+    lndProcess = await startLndProcess({
+      isDev,
+      macaroonsEnabled: MACAROONS_ENABLED,
+      lndDataDir: LND_DATA_DIR,
+      lndLogDir: LND_LOG_DIR,
+      lndPort: LND_PORT,
+      lndPeerPort: LND_PEER_PORT,
+      logger: Logger,
+    });
+  } catch (err) {
+    Logger.error(`Caught Error When Starting ${LND_NAME}: ${err}`);
+  }
+};
+
+ps.lookup({ command: LND_NAME }, (err, resultList) => {
+  if (err) {
+    Logger.info(`lnd ps lookup error: ${err}`);
+  } else if (resultList) {
+    Logger.info(`lnd will run on port ${LND_PORT}, ${LND_DATA_DIR}`);
+    startLnd();
+  } else {
+    startLnd();
+  }
+});
+
+app.on('quit', () => {
+  lndProcess && lndProcess.kill();
+  btcdProcess && btcdProcess.kill();
+});
+
+// *************************
+// ****** CHETSULIN ********
+// *************************
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -83,4 +188,11 @@ app.on('ready', async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+
+  grcpClient.init({
+    ipcMain,
+    lndPort: LND_PORT,
+    lndDataDir: LND_DATA_DIR,
+    macaroonsEnabled: MACAROONS_ENABLED,
+  });
 });
