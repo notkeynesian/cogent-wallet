@@ -1,4 +1,5 @@
 // @flow
+/* eslint flowtype/no-weak-types: 0 */
 import { GET_INFO } from '../actions/info';
 import initialState from './initialState';
 
