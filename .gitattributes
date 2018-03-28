@@ -4,4 +4,6 @@
 *.jpeg binary
 *.ico binary
 *.icns binary
-resources/bin/* binary
+resources/bin/win32/* binary
+resources/bin/linux/* binary
+resources/bin/darwin/* binary
