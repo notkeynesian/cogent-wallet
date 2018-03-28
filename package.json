@@ -57,8 +57,7 @@
       ]
     },
     "mac": {
-      "extraResources": 
-      {
+      "extraResources": {
         "from": "resources/bin/darwin",
         "to": "bin/darwin"
       }
@@ -67,8 +66,7 @@
       "target": [
         "nsis"
       ],
-      "extraResources": 
-      {
+      "extraResources": {
         "from": "resources/bin/win32",
         "to": "bin/win32"
       }
@@ -79,8 +77,7 @@
         "AppImage"
       ],
       "category": "Development",
-      "extraResources": 
-      {
+      "extraResources": {
         "from": "resources/bin/linux",
         "to": "bin/linux"
       }
