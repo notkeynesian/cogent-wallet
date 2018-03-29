@@ -1,15 +1,12 @@
 // @flow
 /* eslint flowtype/no-weak-types: 0 */
-import { GET_INFO } from '../actions/info';
+
+import { GET_INFO_SUCCESS } from '../actions/info';
 import initialState from './initialState';
 
-export type infoType = {
-  alias: string
-};
-
-export default function counter(state: infoType = initialState.info, action: any) {
+export default function infoReducer(state: any = initialState.info, action: any) {
   switch (action.type) {
-    case GET_INFO:
+    case GET_INFO_SUCCESS:
       return action.info;
 
     default:

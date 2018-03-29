@@ -2,11 +2,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Counter.css';
-import type { infoType } from '../reducers/info';
 
 type Props = {
-  getInfo: () => void,
-  info: infoType
+  getInfo: any,
+  info: any
 };
 
 export default class Info extends Component<Props> {
