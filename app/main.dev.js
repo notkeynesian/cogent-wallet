@@ -195,5 +195,6 @@ app.on('ready', async () => {
     lndPort: LND_PORT,
     lndDataDir: LND_DATA_DIR,
     macaroonsEnabled: MACAROONS_ENABLED,
+    logger: Logger,
   });
 });

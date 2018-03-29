@@ -66,11 +66,14 @@ module.exports.init = async function({
   lndPort,
   lndDataDir,
   macaroonsEnabled,
+  logger
 }) {
   const credentials = await getCredentials(lndDataDir);
-  const { lnrpc } = grpc.load(
-    path.join(__dirname, '..', 'resources', 'rpc.proto')
-  );
+  const protoPath = __dirname.includes('asar')
+    ? path.join(__dirname, '..', '..', 'resources', 'rpc.proto')
+    : path.join(__dirname, '..', 'resources', 'rpc.proto');
+  logger.info(`Loading grpc proto file from: ${protoPath}`);
+  const { lnrpc } = grpc.load(protoPath);
   let metadata;
   if (macaroonsEnabled) {
     metadata = getMetadata();

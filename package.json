@@ -57,19 +57,31 @@
       ]
     },
     "mac": {
-      "extraResources": {
-        "from": "resources/bin/darwin",
-        "to": "bin/darwin"
-      }
+      "extraResources": [
+        {
+          "from": "resources/bin/darwin",
+          "to": "bin/darwin"
+        },
+        {
+          "from": "resources/rpc.proto",
+          "to": "rpc.proto"
+        }
+      ]
     },
     "win": {
       "target": [
         "nsis"
       ],
-      "extraResources": {
-        "from": "resources/bin/win32",
-        "to": "bin/win32"
-      }
+      "extraResources": [
+        {
+          "from": "resources/bin/win32",
+          "to": "bin/win32"
+        },
+        {
+          "from": "resources/rpc.proto",
+          "to": "rpc.proto"
+        }
+      ]
     },
     "linux": {
       "target": [
@@ -77,10 +89,16 @@
         "AppImage"
       ],
       "category": "Development",
-      "extraResources": {
-        "from": "resources/bin/linux",
-        "to": "bin/linux"
-      }
+      "extraResources": [
+        {
+          "from": "resources/bin/linux",
+          "to": "bin/linux"
+        },
+        {
+          "from": "resources/rpc.proto",
+          "to": "rpc.proto"
+        }
+      ]
     },
     "directories": {
       "buildResources": "resources",
