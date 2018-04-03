@@ -1,10 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Counter.css';
 
 type Props = {
-  getInfo: any,
+  getInfo: () => void,
   info: any
 };
 
@@ -17,14 +16,14 @@ export default class Info extends Component<Props> {
     } = this.props;
     return (
       <div>
-        <div className={styles.backButton} data-tid="backButton">
+        <div data-tid="backButton">
           <Link to="/">
-            <i className="fa fa-arrow-left fa-3x" />
+            Home
           </Link>
         </div>
-        <div className={styles.btnGroup}>
+        <div>
           <h3>{info.alias}</h3>
-          <button className={styles.btn} onClick={getInfo} data-tclass="btn">
+          <button onClick={getInfo} data-tclass="btn">
             GETINFO
           </button>
         </div>
