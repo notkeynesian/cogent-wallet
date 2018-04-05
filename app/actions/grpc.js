@@ -4,15 +4,16 @@ import { Duplex } from 'stream';
 import * as log from './logs';
 
 class ActionsGrpc {
-  constructor(store, ipcRenderer) {
-    this._store = store;
+  constructor(ipcRenderer) {
     this._ipcRenderer = ipcRenderer;
+    this.isLndReady = false;
+    this.isUnlockerReady = false;
   }
 
   async initUnlocker() {
     await this._sendIpc('unlockInit', 'unlockReady');
     log.info('GRPC unlockerReady');
-    this._store.unlockerReady = true;
+    this.isUnlockerReady = true;
   }
 
   async sendUnlockerCommand(method, body) {
@@ -22,7 +23,7 @@ class ActionsGrpc {
   async initLnd() {
     await this._sendIpc('lndInit', 'lndReady');
     log.info('GRPC lndReady');
-    this._store.lndReady = true;
+    this.isLndReady = true;
   }
 
   sendCommand(method, body) {

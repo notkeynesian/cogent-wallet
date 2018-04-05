@@ -5,6 +5,9 @@ import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import * as counterActions from '../actions/counter';
+import ActionsGrpc from '../actions/grpc';
+
+const ipc = require('electron').ipcRenderer;
 
 const history = createHashHistory();
 
@@ -14,7 +17,10 @@ const configureStore = (initialState) => {
   const enhancers = [];
 
   // Thunk Middleware
-  middleware.push(thunk);
+  const grpc = new ActionsGrpc(ipc);
+  grpc.initLnd();
+  grpc.initUnlocker();
+  middleware.push(thunk.withExtraArgument(grpc));
 
   // Logging Middleware
   const logger = createLogger({
