@@ -1,5 +1,4 @@
 export default {
-  counter: 0,
   info: {
     identity_pubkey: '',
     alias: '',

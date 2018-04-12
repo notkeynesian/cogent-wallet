@@ -12,7 +12,6 @@ export default class Home extends Component<Props> {
       <div>
         <div data-tid="container">
           <h2>Home</h2>
-          <Link to="/counter">to Counter</Link><br />
           <Link to="/info">to Info</Link><br />
         </div>
       </div>
