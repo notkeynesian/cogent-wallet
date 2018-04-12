@@ -11,7 +11,8 @@ export default class Header extends Component<Props> {
     return (
       <nav className="nav nav-pills nav-justified">
         <Link className="nav-link active" to="/">Cogent Wallet</Link><br />
-        <Link className="nav-link" to="/info">to Info</Link><br />
+        <Link className="nav-link" to="/info">Info</Link><br />
+        <Link className="nav-link" to="/walletBalance">Wallet</Link><br />
       </nav>
     );
   }

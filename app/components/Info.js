@@ -18,7 +18,7 @@ export default class Info extends Component<Props> {
         <br /><br />
         <div>
           <button onClick={getInfo} className="btn btn-primary btn-sm">
-            getInfo
+            Invoke
           </button>
           <br /><br />
           <table>

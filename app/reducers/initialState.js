@@ -12,6 +12,11 @@ export default {
     chains: [],
     uris: '',
     best_header_timestamp: 0
+  },
+  wallet: {
+    total_balance: 0,
+    confirmed_balance: 0,
+    unconfirmed_balance: 0
   }
 };
 
