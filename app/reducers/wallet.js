@@ -5,7 +5,6 @@ import { WALLET_BALANCE_SUCCESS } from '../actions/wallet';
 import initialState from './initialState';
 
 export default function walletReducer(state: any = initialState.wallet, action: any) {
-  console.log(state, action);
   switch (action.type) {
     case WALLET_BALANCE_SUCCESS:
       return action.wallet;
