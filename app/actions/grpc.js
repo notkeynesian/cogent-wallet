@@ -1,7 +1,6 @@
 /* eslint no-underscore-dangle: 0, no-param-reassign: 0 */
 
 import { Duplex } from 'stream';
-import * as log from './logs';
 
 class ActionsGrpc {
   constructor(ipcRenderer) {
@@ -12,7 +11,7 @@ class ActionsGrpc {
 
   async initUnlocker() {
     await this._sendIpc('unlockInit', 'unlockReady');
-    log.info('GRPC unlockerReady');
+    console.log('GRPC unlockerReady');
     this.isUnlockerReady = true;
   }
 
@@ -22,7 +21,7 @@ class ActionsGrpc {
 
   async initLnd() {
     await this._sendIpc('lndInit', 'lndReady');
-    log.info('GRPC lndReady');
+    console.log('GRPC lndReady');
     this.isLndReady = true;
   }
 
@@ -51,7 +50,7 @@ class ActionsGrpc {
       listen = method ? `${listen}_${method}` : listen;
       this._ipcRenderer.once(listen, (e, arg) => {
         if (arg.err) {
-          log.error('GRPC: Error from method', method, arg.err);
+          console.log('GRPC: Error from method', method, arg.err);
           return reject(arg.err);
         }
         resolve(arg.response);
