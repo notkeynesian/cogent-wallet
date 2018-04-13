@@ -75,12 +75,17 @@ module.exports.startLndProcess = async function({
     isDev ? '' : '--neutrino.connect=btcd0.lightning.computer:18333',
     isDev ? '' : '--neutrino.connect=127.0.0.1:18333',
     isDev ? '' : '--autopilot.active',
+
+    lnd --bitcoin.active --bitcoin.testnet --debuglevel=debug --bitcoin.node=bitcoind --bitcoind.rpcuser=REPLACEME --bitcoind.rpcpass=REPLACEME --bitcoind.zmqpath=tcp://127.0.0.1:28332 --externalip=98.240.200.2
     */
 
     '--bitcoin.active',
     '--bitcoin.testnet',
-    '--bitcoin.node=neutrino',
-    '--neutrino.connect=faucet.lightning.community',
+    '--bitcoin.node=bitcoind',
+    '--bitcoind.rpcuser=SOMEUSER',
+    '--bitcoind.rpcpass=SOMEPASSWORD',
+    '--bitcoind.zmqpath=tcp://127.0.0.1:28332',
+    '--externalip=98.240.200.2',
     macaroonsEnabled ? '' : '--no-macaroons',
     lndDataDir ? `--datadir=${lndDataDir}` : '',
     lndDataDir ? `--tlscertpath=${lndDataDir}/tls.cert` : '',
@@ -90,7 +95,7 @@ module.exports.startLndProcess = async function({
     lndPeerPort ? `--listen=localhost:${lndPeerPort}` : '',
     lndRestPort ? `--restlisten=localhost:${lndRestPort}` : '',
 
-    '--debuglevel=info',
+    '--debuglevel=debug',
     '--noencryptwallet',
   ];
   return startChildProcess(processName, args, logger);
