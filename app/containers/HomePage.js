@@ -1,15 +1,16 @@
-// @flow
-import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Home from '../components/Home';
+import * as InfoActions from '../actions/info';
 
-type Props = {};
-
-export default class HomePage extends Component<Props> {
-  props: Props;
-
-  render() {
-    return (
-      <Home />
-    );
-  }
+function mapStateToProps(state) {
+  return {
+    info: state.info
+  };
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(InfoActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
